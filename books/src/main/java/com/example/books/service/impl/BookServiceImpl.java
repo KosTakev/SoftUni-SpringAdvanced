@@ -2,10 +2,11 @@ package com.example.books.service.impl;
 
 import com.example.books.model.dto.AuthorDTO;
 import com.example.books.model.dto.BookDTO;
+import com.example.books.model.entity.AuthorEntity;
 import com.example.books.model.entity.BookEntity;
 import com.example.books.repository.BookRepository;
+import com.example.books.service.AuthorService;
 import com.example.books.service.BookService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +18,12 @@ public class BookServiceImpl implements BookService {
 
 
     private BookRepository bookRepository;
+    private AuthorService authorService;
 
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository,
+                           AuthorService authorService) {
         this.bookRepository = bookRepository;
+        this.authorService = authorService;
     }
 
     @Override
@@ -41,6 +45,20 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBookById(Long bookId) {
         bookRepository.deleteById(bookId);
+    }
+
+    @Override
+    public Long createBook(BookDTO newBook) {
+        String authorName = newBook.getAuthor().getName();
+        Optional<AuthorEntity> authorOpt = authorService.findAuthorByName(authorName);
+
+        BookEntity entityToBeSaved = new BookEntity()
+                .setTitle(newBook.getTitle())
+                .setIsbn(newBook.getIsbn())
+                .setAuthor(authorOpt.isPresent()
+                ? authorOpt.get()
+                        :authorService.save(new AuthorEntity().setName(authorName)));
+        return entityToBeSaved.getId();
     }
 
     private BookDTO map(BookEntity bookEntity) {
