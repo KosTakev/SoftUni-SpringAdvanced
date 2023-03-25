@@ -51,7 +51,7 @@ public class SecurityConfiguration {
                 .usernameParameter(UsernamePasswordAuthenticationFilter
                         .SPRING_SECURITY_FORM_USERNAME_KEY)
                 //the name of the password form field (it has to match with the name in the html form!!!):
-                .usernameParameter(UsernamePasswordAuthenticationFilter
+                .passwordParameter(UsernamePasswordAuthenticationFilter
                         .SPRING_SECURITY_FORM_PASSWORD_KEY)
                 //the page shown if the login is successful (the home page):
                 .defaultSuccessUrl("/")
