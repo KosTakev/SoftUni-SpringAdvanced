@@ -1,2 +1,9 @@
-package bg.softuni.hateoas.hateoas.repository;public interface StudentRepository {
+package bg.softuni.hateoas.hateoas.repository;
+
+import bg.softuni.hateoas.hateoas.model.entity.StudentEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
 }
